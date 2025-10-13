@@ -4,5 +4,7 @@ export interface Product {
   description: string;
   price: string;
   created_at?: string;
+  file?: File;
+  image_url?: string;
 }
  

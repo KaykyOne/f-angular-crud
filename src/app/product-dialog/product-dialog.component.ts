@@ -7,10 +7,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { Product } from '../models/products';
 
 @Component({
-    selector: 'app-product-dialog',
-    standalone: true,
-    imports: [FormsModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatButtonModule],
-    template: `
+  selector: 'app-product-dialog',
+  standalone: true,
+  imports: [FormsModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatButtonModule],
+  template: `
     <h1 mat-dialog-title>Produto</h1>
     <div mat-dialog-content>
       <mat-form-field style="width:100%">
@@ -27,6 +27,11 @@ import { Product } from '../models/products';
         <mat-label>Preço</mat-label>
         <input matInput type="number" [(ngModel)]="data.product.price">
       </mat-form-field>
+      
+      <div class="full-width">
+        <label for="fileInput">Imagem</label>
+        <input id="fileInput" type="file" (change)="onFileSelected($event)" />
+      </div>
     </div>
     <div mat-dialog-actions>
       <button mat-button (click)="onCancel()">Cancelar</button>
@@ -35,16 +40,25 @@ import { Product } from '../models/products';
   `
 })
 export class ProductDialogComponent {
-    constructor(
-        public dialogRef: MatDialogRef<ProductDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: { product: Product }
-    ) { }
+  constructor(
+    public dialogRef: MatDialogRef<ProductDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { product: Product }
+  ) { }
 
-    onCancel(): void {
-        this.dialogRef.close();
+  onCancel(): void {
+    this.dialogRef.close();
+  }
+
+  onSave(): void {
+    this.dialogRef.close(this.data.product);
+  }
+
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (file) {
+      // Armazena o arquivo dentro do objeto enviado pro pai
+      (this.data.product as any).file = file;
     }
 
-    onSave(): void {
-        this.dialogRef.close(this.data.product);
-    }
+  }
 }

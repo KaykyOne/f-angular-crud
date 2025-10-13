@@ -15,7 +15,7 @@ import { ProductDialogComponent } from '../product-dialog/product-dialog.compone
     styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit {
-    displayedColumns: string[] = ['name', 'price', 'actions'];
+    displayedColumns: string[] = ['image', 'name', 'price', 'actions'];
     supabaseService = inject(SupabaseService);
     dialog = inject(MatDialog);
 
@@ -36,6 +36,7 @@ export class ProductsComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 if (product?.id) {
+                    console.log('Updating product:', product.id, result);
                     this.supabaseService.updateProduct(product.id, result);
                 } else {
                     this.supabaseService.addProduct({
